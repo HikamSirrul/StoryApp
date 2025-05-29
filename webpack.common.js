@@ -1,16 +1,14 @@
-const path = require('path'); 
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
     app: path.resolve(__dirname, 'src/scripts/index.js'),
-    sw: path.resolve(__dirname, 'src/public/sw.js'),
   },
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/StoryApp/', 
   },
   module: {
     rules: [
@@ -23,23 +21,19 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/index.html'),
-      excludeChunks: ['sw'],
     }),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/public'),
-          to: 'icons', 
-        },
-        {
-          from: path.resolve(__dirname, 'src/public/manifest.json'),
-          to: 'manifest.json',
-        },
-        {
-          from: path.resolve(__dirname, 'src/public/favicon.png'),  
-          to: 'favicon.png',
+          from: path.resolve(__dirname, 'src/public/'),
+          to: path.resolve(__dirname, 'dist/'),
         },
       ],
     }),
   ],
+  devServer: {
+    client: {
+      logging: 'none', 
+    },
+  },
 };
