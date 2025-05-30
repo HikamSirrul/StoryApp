@@ -135,14 +135,19 @@ saveButtons.forEach(button => {
     const id = article?.dataset.id;
     const story = this.stories.find((s) => s.id === id);
     if (!story) return;
+try {
+  const storyWithManualFlag = {
+    ...story,
+    manualSaved: true, // tandai bahwa ini disimpan manual
+  };
 
-    try {
-      await IdbHelper.saveStory(story);
-      alert('Story berhasil disimpan untuk offline!');
-    } catch (err) {
-      console.error('[HomePage] Gagal simpan story:', err);
-      alert('Gagal menyimpan story ke cache.');
-    }
+  await IdbHelper.saveStory(storyWithManualFlag);
+  alert('Story berhasil disimpan untuk offline!');
+} catch (err) {
+  console.error('[HomePage] Gagal simpan story:', err);
+  alert('Gagal menyimpan story ke cache.');
+}
+
   });
 });
 
