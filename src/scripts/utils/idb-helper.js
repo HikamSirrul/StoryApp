@@ -32,11 +32,15 @@ const IdbHelper = {
         if (response.ok) {
           const blob = await response.blob();
           story.photoBlob = blob;
+          story.manualSaved = true;
         }
       } catch (err) {
         console.warn('[IdbHelper] Gagal fetch photo untuk offline:', err);
       }
     }
+
+    // ✅ Tandai bahwa cerita ini disimpan secara eksplisit oleh user
+    story.saved = true;
 
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -58,6 +62,12 @@ const IdbHelper = {
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
+  },
+
+  // ✅ Ambil hanya cerita yang benar-benar disimpan (saved === true)
+  async getSavedStories() {
+    const allStories = await this.getAllStories();
+    return allStories.filter((story) => story.saved === true);
   },
 
   async deleteStory(id) {

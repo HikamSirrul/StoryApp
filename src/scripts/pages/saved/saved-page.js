@@ -6,7 +6,7 @@ class SavedPage {
   }
 
   async afterRender() {
-    const stories = await IdbHelper.getAllStories();
+    const stories = await IdbHelper.getSavedStories();
     const container = document.getElementById('savedList');
 
     container.innerHTML = '<h2>Disimpan Offline</h2>'; // Header tetap

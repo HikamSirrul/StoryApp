@@ -98,6 +98,7 @@ export default class HomePage {
           <time datetime="${story.createdAt}" class="story-date">
             ${new Date(story.createdAt).toLocaleString()}
           </time>
+          <button class="btn-save" aria-label="Simpan story ${story.name}">Simpan</button>
           <button class="btn-delete" aria-label="Hapus story ${story.name}">Hapus</button>
         </article>
       `;
@@ -125,6 +126,26 @@ export default class HomePage {
         }
       });
     });
+
+    // Pasang event handler tombol simpan
+const saveButtons = storyContainer.querySelectorAll('.btn-save');
+saveButtons.forEach(button => {
+  button.addEventListener('click', async (event) => {
+    const article = event.target.closest('article');
+    const id = article?.dataset.id;
+    const story = this.stories.find((s) => s.id === id);
+    if (!story) return;
+
+    try {
+      await IdbHelper.saveStory(story);
+      alert('Story berhasil disimpan untuk offline!');
+    } catch (err) {
+      console.error('[HomePage] Gagal simpan story:', err);
+      alert('Gagal menyimpan story ke cache.');
+    }
+  });
+});
+
   }
 
   async loadStories() {
