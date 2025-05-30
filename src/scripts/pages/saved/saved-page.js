@@ -1,4 +1,4 @@
-import IdbHelper from '../../utils/idb-helper';
+const stories = await SavedPagePresenter.getSavedStories();
 
 class SavedPage {
   async render() {
@@ -6,7 +6,7 @@ class SavedPage {
   }
 
   async afterRender() {
-    const stories = await IdbHelper.getSavedStories();
+    const stories = await SavedPagePresenter.getSavedStories();
     const container = document.getElementById('savedList');
 
     container.innerHTML = '<h2>Disimpan Offline</h2>'; // Header tetap
