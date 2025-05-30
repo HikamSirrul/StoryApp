@@ -1,3 +1,5 @@
+import IdbHelper from '../../utils/idb-helper';
+
 const stories = await SavedPagePresenter.getSavedStories();
 
 class SavedPage {

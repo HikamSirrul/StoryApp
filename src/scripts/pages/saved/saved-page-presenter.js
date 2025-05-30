@@ -2,13 +2,21 @@ import IdbHelper from '../../utils/idb-helper';
 
 const SavedPagePresenter = {
   async getSavedStories() {
-    const allStories = await IdbHelper.getAllStories();
-    // Filter hanya yang disimpan manual
-    return allStories.filter(story => story.manualSaved === true);
+    try {
+      const allStories = await IdbHelper.getAllStories();
+      return (allStories || []).filter(story => story.manualSaved === true);
+    } catch (error) {
+      console.error('[SavedPagePresenter] Gagal mengambil cerita:', error);
+      return [];
+    }
   },
 
   async deleteSavedStory(id) {
-    return await IdbHelper.deleteStory(id);
+    try {
+      await IdbHelper.deleteStory(id);
+    } catch (error) {
+      console.error(`[SavedPagePresenter] Gagal menghapus cerita dengan id ${id}:`, error);
+    }
   }
 };
 
